@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,13 +9,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     <title>Home</title>
 </head>
 <body>
         <nav class="navbar navbar-dark bg-dark">
-        <span class="navbar-brand mb-1 h1">
+        <span class="navbar-brand mb-0 h1">
                 <h3>Automated Answer Checker</h3>
         </span>
         <span class="navbar-text">
@@ -28,12 +29,7 @@
 {% endblock %}
 
 <!-- Optional JavaScript -->
-<script>
-        $('.custom-file-input').on('change',function(){
-        var fileName = document.getElementById("exampleInputFile").files[0].name;
-        $(this).next('.form-control-file').addClass("selected").html(fileName);
-        })
-</script>
+<script> src = "{% static 'js/file_input.js'%}" </script>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

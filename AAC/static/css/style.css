@@ -1,0 +1,18 @@
+body {
+    background-image: linear-gradient(to right, #d1bdb2 0%, #ece9da 100%);
+    
+}
+
+input[type="file"] {
+    z-index: -1;
+    top: 6px;
+    left: 0;
+    font-size: 20px;
+    color: rgb(139, 73, 73);
+}
+
+label{
+    color: rgb(30, 32, 37);
+    padding: 1px;
+    font-size: 120%;
+}

@@ -6,8 +6,12 @@ class AnswerForm(forms.Form):
     label='Student Name',
     )
 
+    subject_name = forms.CharField(
+    label='Subject',
+    )
+
     answer = forms.FileField(
-    label='Answer sheet of student',
+    label='Answer Sheet',
     help_text='pdf, jpeg, png are supported',
     )
 

@@ -11,6 +11,7 @@ def home(request):
         if form.is_valid():
             data = AnswerTable()
             data.student_name = request.POST['student_name']
+            data.subject_name = request.POST['subject_name']
             data.answer = request.FILES['answer']
             data.answer_key = request.FILES['answer_key']
             data.marks = random.randrange(100) # dummy random marks
