@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+<section id="AAC">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    
+                    <input type="submit" class="btn btn-dark btn-block" value="Calculate Mark"/>
+                </form>
+            </div>
+
+            <div class="container">
+                <br>       
+                <table class="table table-striped">
+                  <thead class = "thead-dark">
+                    <tr>
+                      <th>Name</th>
+                      <th>Marks</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  {% for data in datas %}
+                  <tbody>  
+                    <tr>
+                      <td>{{ data.student_name }}</td>
+                      <td>{{ data.marks }}</td>
+                      <td>
+                        <form action="{% url 'delete' data.id %}" method="POST" class="d-inline-block">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-danger" value="Delete"/>
+                        </form>
+                      </td>
+                    </tr>
+                  </tbody>
+                  {% endfor %}
+                </table>
+              </div>
+              
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
