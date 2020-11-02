@@ -6,6 +6,8 @@ import random
 def home(request):
     form = AnswerForm()
     datas = AnswerTable.objects.all()
+    import os
+    print(os.path)
     if request.method == 'POST':
         form = AnswerForm(request.POST, request.FILES)
         if form.is_valid():

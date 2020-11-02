@@ -1,3 +1,4 @@
 from django.contrib import admin
+from core.models import AnswerTable
 
-# Register your models here.
+admin.site.register(AnswerTable)
