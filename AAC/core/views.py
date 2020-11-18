@@ -25,3 +25,6 @@ def delete(request, student_id):
     if request.method == 'POST':
         AnswerTable.objects.get(id=student_id).delete()
         return redirect('home')
+    
+def placeHolder(request):
+    pass
