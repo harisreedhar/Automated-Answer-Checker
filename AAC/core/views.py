@@ -19,6 +19,7 @@ def home(request):
 @login_required()
 def answerKeyUpload(request):
     form = AnswerKeyForm()
+    outData = ""
     if request.method == 'POST':
         form = AnswerKeyForm(request.POST)
         if form.is_valid():
@@ -31,8 +32,8 @@ def answerKeyUpload(request):
             }
             data.answer_key = dictionary
             data.save()
-            return redirect('home')
-    return render(request, 'upload_answerkey.html')
+            return redirect('answer_key_upload')
+    return render(request, 'upload_answerkey.html', {'form': form, 'outData': outData})
 
 @login_required()
 def answerSheetUpload(request):
