@@ -7,13 +7,12 @@ input[type="file"] {
     z-index: -1;
     top: 6px;
     left: 0;
-    font-size: 15px;
+    font-size: 20px;
     color: rgb(139, 73, 73);
 }
 
 label{
     color: rgb(30, 32, 37);
     padding: 1px;
-    font-size: 100%;
-
+    font-size: 120%;
 }

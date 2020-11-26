@@ -1,4 +1,8 @@
 from django.contrib import admin
-from core.models import AnswerTable
+from . models import AnswerKeys, AnswerSheets, Grade
 
-admin.site.register(AnswerTable)
+# Register your models here.
+
+admin.site.register(AnswerKeys)
+admin.site.register(AnswerSheets)
+admin.site.register(Grade)

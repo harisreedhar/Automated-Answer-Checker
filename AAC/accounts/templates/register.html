@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+<section id="AAC">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <input type="submit" class="btn btn-secondary btn-lg" value="Register"/>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
