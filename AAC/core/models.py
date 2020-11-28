@@ -30,7 +30,7 @@ class AnswerKeys(models.Model):
         verbose_name_plural = "Answer Key"
 
 class AnswerSheets(models.Model):
-    roll_number = models.IntegerField()
+    roll_number = models.IntegerField(unique = True)
     student_name = models.CharField(max_length=256)
     subject_name = models.CharField(max_length=256)
     answer_sheet = models.FileField(upload_to='documents/%Y/%m/%d')

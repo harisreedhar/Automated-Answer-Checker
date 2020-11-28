@@ -10,11 +10,11 @@ class AnswerSheetForm(forms.Form):
     label='Student Name',
     )
 
-    subject_name = forms.ChoiceField(
-        #queryset = AnswerKeys.objects.all(),
-        choices = [(obj.subject_name, obj.subject_name) for i, obj in enumerate(AnswerKeys.objects.all())],
-        label = 'Subject'
-    )
+    # subject_name = forms.ChoiceField(
+    #     #queryset = AnswerKeys.objects.all(),
+    #     choices = [(obj.subject_name, obj.subject_name) for i, obj in enumerate(AnswerKeys.objects.all())],
+    #     label = 'Subject'
+    # )
 
     answer_sheet = forms.FileField(
     label='Answer Sheet',
@@ -28,24 +28,24 @@ class AnswerKeyForm(forms.Form):
 
     answer_1 = forms.CharField(
         widget=forms.Textarea,
-        label='Answer',
+        label='Qn1 Answer',
     )
     mark_1 = forms.IntegerField(
-        label='Mark',
+        label='Qn1 Mark',
     )
     answer_2 = forms.CharField(
         widget=forms.Textarea,
-        label='Answer',
+        label='Qn2 Answer',
     )
     mark_2 = forms.IntegerField(
-        label='Mark',
+        label='Qn2 Mark',
     )
     answer_3 = forms.CharField(
         widget=forms.Textarea,
-        label='Answer',
+        label='Qn3 Answer',
     )
     mark_3 = forms.IntegerField(
-        label='Mark',
+        label='Qn3 Mark',
     )
 
 

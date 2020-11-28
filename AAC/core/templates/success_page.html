@@ -9,22 +9,17 @@
         <button type="submit" class="btn btn-secondary btn-lg" value="Logout">
           Logout
         </button>
+        <br>
       </form>
+      <br>
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <input type="submit" class="btn btn-secondary btn-lg" value="Upload Answer key"/>
-                    <br>
-                </form>
-                <br>
-            </div>
-
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Successfully added to Database</h1>
         </div>
+      </div>
     </div>
 
 </section>

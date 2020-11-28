@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from core.forms import AnswerSheetForm, AnswerKeyForm
 from core.models import AnswerSheets, AnswerKeys
 import random
@@ -32,13 +33,15 @@ def answerKeyUpload(request):
             }
             data.answer_key = dictionary
             data.save()
+            messages.success(request, 'Form submission successful')
             return redirect('answer_key_upload')
     return render(request, 'upload_answerkey.html', {'form': form, 'outData': outData})
 
 @login_required()
 def answerSheetUpload(request):
     form = AnswerSheetForm()
-    outData = ""
+    outData = AnswerKeys.objects.all()
+    print(outData)
     if request.method == 'POST':
         form = AnswerSheetForm(request.POST, request.FILES)
         if form.is_valid():
@@ -48,8 +51,7 @@ def answerSheetUpload(request):
             data.subject_name = request.POST['subject_name']
             data.answer_sheet = request.FILES['answer_sheet']
             data.save()
-            if data:
-                outData = "Uploaded Successfully"
+            messages.success(request, 'Form submission successful')
             return redirect('answer_sheet_upload')
     return render(request, 'upload_answersheet.html', {'form': form, 'outData': outData})
 
