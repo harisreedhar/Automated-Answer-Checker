@@ -1,5 +1,6 @@
 from django import forms
 from core.models import AnswerKeys
+from django.utils.safestring import mark_safe
 
 class AnswerSheetForm(forms.Form):
     roll_number = forms.IntegerField(
@@ -26,26 +27,37 @@ class AnswerKeyForm(forms.Form):
     label='Subject',
     )
 
-    answer_1 = forms.CharField(
+    answer_key = forms.CharField(
         widget=forms.Textarea,
-        label='Qn1 Answer',
-    )
-    mark_1 = forms.IntegerField(
-        label='Qn1 Mark',
-    )
-    answer_2 = forms.CharField(
-        widget=forms.Textarea,
-        label='Qn2 Answer',
-    )
-    mark_2 = forms.IntegerField(
-        label='Qn2 Mark',
-    )
-    answer_3 = forms.CharField(
-        widget=forms.Textarea,
-        label='Qn3 Answer',
-    )
-    mark_3 = forms.IntegerField(
-        label='Qn3 Mark',
+        label='Answer Key',
     )
 
+    marks = forms.CharField(
+    label='Marks',
+    )
 
+    # using clean_ prefix to custom validate fields
+
+    def clean_marks(self):
+        mrks = self.data.get('marks')
+        checker = False
+        try:
+            mrks = [int(s) for s in mrks.split(',')]
+            checker = True
+        except:
+            checker = False
+        if not checker:
+            raise forms.ValidationError('Marks should be comma separated integer values')
+        return
+
+    def clean_answer_key(self):
+        anskey = self.data.get('answer_key')
+        checker = False
+        try:
+            exec(anskey)
+            checker = True
+        except:
+            checker = False
+        if not checker:
+            raise forms.ValidationError(mark_safe("Answer key should be in the form: <br/> Qn1 = ['hint 1', 'hint 2', ... 'hint n']<br/>Qn2 = ['hint 1', 'hint 2', ... 'hint n']<br/>"))
+        return

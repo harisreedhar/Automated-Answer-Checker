@@ -20,20 +20,27 @@ def home(request):
 @login_required()
 def answerKeyUpload(request):
     form = AnswerKeyForm()
-    outData = ""
+    outData = 0
+    dictionary = {}
     if request.method == 'POST':
         form = AnswerKeyForm(request.POST)
         if form.is_valid():
             data = AnswerKeys()
             data.subject_name = request.POST['subject_name']
-            dictionary = {
-                'Qn1':[request.POST['answer_1'], request.POST['mark_1']],
-                'Qn2':[request.POST['answer_2'], request.POST['mark_2']],
-                'Qn3':[request.POST['answer_3'], request.POST['mark_3']]
-            }
-            data.answer_key = dictionary
-            data.save()
-            messages.success(request, 'Form submission successful')
+            ansKey = request.POST['answer_key']
+            marks = request.POST['marks']
+            marks = [int(s) for s in marks.split(',')]
+            try:
+                exec(ansKey)
+                for i, m in enumerate(marks):
+                    exec(f"dictionary[f'Qn{i+1}'] = [Qn{i+1}, m]")
+                    pass
+                print(dictionary)
+                data.answer_key = dictionary
+                data.save()
+                messages.success(request, 'Form submission successful')
+            except:
+                messages.success(request, 'Form submission unsuccessful')
             return redirect('answer_key_upload')
     return render(request, 'upload_answerkey.html', {'form': form, 'outData': outData})
 

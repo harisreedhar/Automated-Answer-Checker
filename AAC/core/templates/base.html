@@ -15,14 +15,20 @@
 </head>
 <body>
         <nav class="navbar navbar-dark bg-dark">
-        <span class="navbar-brand mb-0 h1">
-                <h3>Automated Answer Checker</h3>
+        <span class="navbar-text">
+                <form action="{% url 'home' %}" method="POST">
+                        {% csrf_token %}
+                <button type="submit" class="btn btn-dark btn-lg " value="Home">
+                             <h3> Automated Answer Checker </h3>
+                </button>
+                </form>
         </span>
         <span class="navbar-text">
                 Evaluate answersheet with ease
         </span>
         </nav>
         <br>
+
 
 {% block content%}
 

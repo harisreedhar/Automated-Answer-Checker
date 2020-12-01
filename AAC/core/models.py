@@ -21,7 +21,7 @@ class Subject(models.Model):
 #     class_name = models.CharField(max_length=256)
 
 class AnswerKeys(models.Model):
-    subject_name = models.CharField(max_length=256)
+    subject_name = models.CharField(max_length=256, unique = True)
     answer_key = models.JSONField()
 
     def __str__(self):
