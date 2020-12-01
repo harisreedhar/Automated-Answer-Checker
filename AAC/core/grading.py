@@ -4,7 +4,7 @@ import gensim
 import numpy as np
 
 
-def calculateMark(answer, answerKey, mark):  #function takes array of strings of recognized texts... and original answer key
+def calculateMark(answer, answerKey, mark):  #function takes array of strings of recognized texts,  original answer key and the maximum mark for the question
            fullAnswerString = ""
            for i in answer:
                   if i != "," and i!= '.':
