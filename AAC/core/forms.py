@@ -1,6 +1,7 @@
 from django import forms
 from core.models import AnswerKeys
 from django.utils.safestring import mark_safe
+from django.core.validators import FileExtensionValidator
 
 class AnswerSheetForm(forms.Form):
     roll_number = forms.IntegerField(
@@ -11,17 +12,10 @@ class AnswerSheetForm(forms.Form):
     label='Student Name',
     )
 
-    # subject_name = forms.ChoiceField(
-    #     #queryset = AnswerKeys.objects.all(),
-    #     choices = [(obj.subject_name, obj.subject_name) for i, obj in enumerate(AnswerKeys.objects.all())],
-    #     label = 'Subject'
-    # )
-
     answer_sheet = forms.FileField(
     label='Answer Sheet',
-    help_text='file should be in pdf format',
+    validators=[ FileExtensionValidator(['pdf'])]
     )
-
 class AnswerKeyForm(forms.Form):
     subject_name = forms.CharField(
     label='Subject',
@@ -59,5 +53,5 @@ class AnswerKeyForm(forms.Form):
         except:
             checker = False
         if not checker:
-            raise forms.ValidationError(mark_safe("Answer key should be in the form: <br/> Qn1 = ['hint 1', 'hint 2', ... 'hint n']<br/>Qn2 = ['hint 1', 'hint 2', ... 'hint n']<br/>"))
+            raise forms.ValidationError(mark_safe("Answer key should be in the form: <br/> Qn1 = 'hint 1', 'hint 2', ... 'hint n'<br/>Qn2 = 'hint 1', 'hint 2', ... 'hint n'<br/>"))
         return

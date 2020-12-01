@@ -22,7 +22,7 @@
                     {{ form|crispy }}
                     <div class="form-group">
                       <label for="Subject">Subject </label>
-                      <select class="form-control" id="subject_name", name = "subject_name">
+                      <select class="form-control" id="subject_name", name = "subject_name" required>
                         <option value="0" selected disabled> Select </option>
                         {% for obj in outData %}
                         <option value="{{ obj.subject_name }}">{{ obj.subject_name }} </option>
@@ -32,19 +32,20 @@
 
                     <input type="submit" class="btn btn-secondary btn-lg" value="Upload Answer sheet"/>
                 </form>
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
             </div>
 
         </div>
-    </div>
 
-      </div>
+      {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <br/>
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+    </div>
   </div>
 
 </section>
