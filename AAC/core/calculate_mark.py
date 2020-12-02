@@ -1,8 +1,16 @@
-from core.HandWriting_Recognition.src.imageToText import photoToText
+from core.HandWriting_Recognition.src.imageToText import pdfToText
+import re
 import bisect
 
-def getWordsFromImage(imagePath):
-       wordList, accuracyList = photoToText(imagePath)
+def getWordsFromPdf(imagePath, splitAnswers = False):
+       wordList, accuracyList = pdfToText(imagePath)
+
+       if splitAnswers:
+              # split by keyword 'answer'
+              text = re.split("answer", wordList)
+              if len(text) > 1:
+                     text = text[1:]
+              return text
        return wordList
 
 def seperateQuestionAnswer(words_from_answersheet):
@@ -59,8 +67,8 @@ def decomposeDictionary(answerKey, includeMarks = False):
        return words
 
 def calculateMark():
-       imagePath = '/home/hari/Documents/College_Project/test_project/core/HandWriting_Recognition/data/test.jpg'
-       words_from_answersheet = getWordsFromImage(imagePath)
+       imagePath = '/home/hari/Downloads/htr_test.pdf'
+       words_from_answersheet = getWordsFromPdf(imagePath, splitAnswers = True)
 
        answerKey = {'Qn1':[("test1", "test1"), 10],
                     'Qn2':[("test2", "test2"), 20],
