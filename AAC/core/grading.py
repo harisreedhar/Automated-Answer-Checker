@@ -1,11 +1,13 @@
 import numpy as np
+import nltk
+#nltk.download('punkt')
 from nltk.tokenize import word_tokenize
 from nltk.tokenize import sent_tokenize
 import gensim
 
  #function takes array of strings of recognized texts... and original answer key
-    
-def answerForSingleQuestion(answer, answerKey, mark): 
+
+def answerForSingleQuestion(answer, answerKey, mark):
             fullAnswerString = ""
             for i in answer:
                     if i != "," and i!= '.':
@@ -14,7 +16,7 @@ def answerForSingleQuestion(answer, answerKey, mark):
             print(fullAnswerString)
 
             tokenizedAnswer = sent_tokenize(fullAnswerString)  #sentence tokenising
-            
+
             print(tokenizedAnswer)
 
             gen_docs = [[w.lower() for w in word_tokenize(text)] for text in tokenizedAnswer]  #word tokenizing
@@ -30,13 +32,13 @@ def answerForSingleQuestion(answer, answerKey, mark):
                   print([[dictionary[id], np.around(freq, decimals=2)] for id, freq in doc])
 
             # building the index
-            sims = gensim.similarities.Similarity('workdir/',tf_idf[corpus], num_features=len(dictionary))
+            sims = gensim.similarities.Similarity('./core/workdir/',tf_idf[corpus], num_features=len(dictionary))
 
 
             #Create Query Document Once the index is built, we are going to calculate how similar is this query document to each document in the index.
             answerKeyDocs = []
             avg_sims = []
-            
+
             fullAnswerKeyString = ""
             for i in answerKey:
                     if i != "," and i!= '.':
@@ -52,7 +54,7 @@ def answerForSingleQuestion(answer, answerKey, mark):
             for line in tokenizedAnswerKey:
                            answerKeyDocs.append(line)
 
-                     
+
 
             for line in answerKeyDocs:
                     query_doc = [w.lower() for w in word_tokenize(line)]
@@ -83,11 +85,11 @@ def answerForSingleQuestion(answer, answerKey, mark):
             # that means documents are almost same
             if percentage_of_similarity >= 100:
                  percentage_of_similarity = 100
-                    
+
             print(percentage_of_similarity)
 
 
             x = percentage_of_similarity/100
-            total_mark = mark * x;
+            total_mark = mark * x
 
             return round(total_mark)

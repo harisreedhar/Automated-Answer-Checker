@@ -1,6 +1,8 @@
 from core.HandWriting_Recognition.src.imageToText import pdfToText
+from core.grading import answerForSingleQuestion
 import re
 import bisect
+import spacy
 
 def getWordsFromPdf(imagePath, splitAnswers = False):
        wordList, accuracyList = pdfToText(imagePath)
@@ -14,7 +16,7 @@ def getWordsFromPdf(imagePath, splitAnswers = False):
        return wordList
 
 def seperateQuestionAnswer(words_from_answersheet):
-       
+
        qn = ["answer", "answer2", "answer3"]
        nI = len(qn)
        answerFromStudent = {}
@@ -29,13 +31,13 @@ def seperateQuestionAnswer(words_from_answersheet):
                             fullanswer += j
                             fullanswer += " "
                      answerFromStudent[qn[i-1]: fullanswer]
-                     
+
                      ans = words_from_answersheet[pos2: last-1]
                      for j in ans:
                             fullanswer += j
                             fullanswer += " "
                      answerFromStudent[qn[i]: fullanswer]
-                     
+
               else:
                      pos2 =  bisect.bisect_right(words_from_answersheet, qn(i))
                      ans = words_from_answersheet[pos1: pos2]
@@ -44,12 +46,10 @@ def seperateQuestionAnswer(words_from_answersheet):
                             fullanswer += " "
                      answerFromStudent[qn[i-1]: fullanswer]
                      pos1 = pos2
-             
-       
-       return answerFromStudent 
 
-              
-              
+
+       return answerFromStudent
+
 
 def decomposeDictionary(answerKey, includeMarks = False):
        words = []
@@ -61,33 +61,53 @@ def decomposeDictionary(answerKey, includeMarks = False):
               marks.append(answer_and_mark[1])
 
        # convert individual string elements to a single string list
-       words = [' '.join(w) for w in words]
+       #words = [' '.join(w) for w in words]
        if includeMarks:
               return words, marks
        return words
 
-def calculateMark():
-       imagePath = '/home/hari/Downloads/htr_test.pdf'
-       words_from_answersheet = getWordsFromPdf(imagePath, splitAnswers = True)
+def temporarySimilarityChecking(answer, answerKey, mark):
+       nlp = spacy.load('en')
+       doc1 = nlp(answer)
+       doc2 = nlp(answerKey)
+       similarity = doc1.similarity(doc2)
 
-       answerKey = {'Qn1':[("test1", "test1"), 10],
-                    'Qn2':[("test2", "test2"), 20],
-                    'Qn3':[("test3", "test3"), 30]}
-       words_from_answerkey = decomposeDictionary(answerKey)
-       
-       answerFromStudent = seperateQuestionAnswer(words_from_answersheet) # getting answers of corresponding questions
-       length = len(answerFromStudent)
-       
-       answerFromStudentList = list(answerFromStudent) #converting to list for accessing value by index
-       answerKeyList = list(answerKey) #converting to list for accessing value by index
-       
-       total = 0 # for storing total_marks
-       for i in range(length):
-              total += markForOneQuestion(answerFromStudent[i], answerKeyList[i], 10))
-              
+       # simple maprange
+       value = similarity
+       leftMin = 0
+       leftMax = 1
+       rightMin = 0
+       rightMax = mark
+       leftSpan = leftMax - leftMin
+       rightSpan = rightMax - rightMin
+       valueScaled = float(value - leftMin) / float(leftSpan)
+       newValue = rightMin + (valueScaled * rightSpan)
 
-       ####### Do similarity checking code here #######
+       return round(newValue)
 
-       print("Answer sheet:\n", words_from_answersheet)
-       print("Answer key:\n", words_from_answerkey)
-       return
+def calculateMark(answerSheet, answerKey):
+       words_from_answersheet = getWordsFromPdf(answerSheet, splitAnswers = True)
+       print(words_from_answersheet)
+       words_from_answerkey, marks = decomposeDictionary(answerKey, includeMarks=True)
+       print(words_from_answerkey)
+
+       computedMarks = []
+       if len(words_from_answersheet) == len(words_from_answerkey):
+              for anskey, ans, mrk in zip(words_from_answerkey, words_from_answersheet, marks):
+                     #ans = re.split('\s+', ans)
+                     #anskey = re.split('\s+', anskey)
+                     #computedMarks.append(answerForSingleQuestion(ans, anskey, mrk))
+                     computedMarks.append(temporarySimilarityChecking(ans, anskey, mrk))
+       else:
+              print("Handwriting Detection error! length of answerkeys and answer doesn't match")
+
+       actual_mark = sum(marks)
+       computed_mark = sum(computedMarks)
+
+       return actual_mark, computed_mark
+
+answerKey = {'Qn1':[("frederick Barbarossa was elected king of germany on 4th march 1152"), 5],
+             'Qn2':[("ivan the terrible was the first brand prince to have himself officially crowned tsar"), 10],
+             'Qn3':[("The noble six hundred refers to the six hundred British soldiers of light brigade"), 10]}
+
+imagePath = '/home/hari/Downloads/htr_test.pdf'

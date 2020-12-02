@@ -93,7 +93,11 @@ def photoToText(imageArr, autoCorrection = True):
 	return answer, accuracyList
 
 def pdfToText(path):
-	images = pdf_to_image(path)
+	dir_path = os.path.dirname(os.path.realpath(__file__))
+	curr = str(Path(dir_path).parents[2])
+	fullPath = curr + path
+	print(fullPath)
+	images = pdf_to_image(fullPath)
 	answer = ""
 	accuracyList = []
 	for img in images:

@@ -31,10 +31,14 @@ class AnswerSheets(models.Model):
         verbose_name_plural = "Answer Sheet"
 
 class Grade(models.Model):
-    answersheet_id = models.ForeignKey(AnswerSheets, on_delete=models.CASCADE)
+    answersheet_id = models.IntegerField(unique = True)
+    total_mark = models.IntegerField()
+    computed_mark = models.IntegerField()
     grade = models.CharField(max_length=32)
+    student_name = models.CharField(max_length=256)
+    subject_name = models.CharField(max_length=256)
 
     def __str__(self):
-        return self.name
+        return self.subject_name
     class Meta:
         verbose_name_plural = "Grade"

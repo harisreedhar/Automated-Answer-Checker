@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
-from core.models import AnswerSheets, AnswerKeys
+from core.models import AnswerSheets, AnswerKeys, Grade
 from core.forms import AnswerSheetForm, AnswerKeyForm
 from django.contrib.auth.decorators import login_required
 from core.calculate_mark import calculateMark
@@ -10,12 +10,12 @@ from core.calculate_mark import calculateMark
 @login_required()
 def home(request):
     form = AnswerKeyForm()
-    datas = AnswerSheets.objects.all()
-    calculateMark()
+    datas = Grade.objects.all()
     if request.method == 'POST':
         form = AnswerKeyForm(request.POST)
         if form.is_valid():
             return redirect('home')
+
     return render(request, 'home.html', {'form': form, 'datas': datas})
 
 @login_required()
@@ -90,6 +90,47 @@ def answerSheetUpload(request):
             return redirect('answer_sheet_upload')
     return render(request, 'upload_answersheet.html', {'form': form, 'outData': outData})
 
+def getMarks(request, answerSheet, ansId):
+    subjectName = request.POST['subject_name']
+    checker = None
+    answerKey = None
+    try:
+        checker = AnswerKeys.objects.get(subject_name=subjectName)
+        answerKey = checker.answer_key
+        totalMark, computedMark = calculateMark(answerSheet, answerKey)
+
+        create_Or_Update_Grade(int(ansId), totalMark, computedMark)
+
+        messages.success(request, f"{computedMark} mark out of {totalMark}")
+    except:
+        messages.success(request, "Failed Calculating Marks")
+    return
+
+def create_Or_Update_Grade(ansId, totalMark, computedMark):
+    checker = None
+    ansInstance = AnswerSheets.objects.get(id=ansId)
+    try:
+        checker = Grade.objects.get(answersheet_id=ansId)
+    except:
+        pass
+
+    if checker is None:
+        data = Grade()
+        data.answersheet_id = ansId
+        data.total_mark = totalMark
+        data.computed_mark = computedMark
+        data.grade = 'grade'
+        data.subject_name = ansInstance.subject_name
+        data.student_name = ansInstance.student_name
+        data.save()
+    else:
+        checker.total_mark = totalMark
+        checker.computed_mark = computedMark
+        checker.grade = 'grade'
+        checker.subject_name = ansInstance.subject_name
+        checker.student_name = ansInstance.student_name
+        checker.save()
+    return
 
 def create_Or_Update_AnswerSheet(request):
     # intialize a checker
@@ -108,6 +149,7 @@ def create_Or_Update_AnswerSheet(request):
         data.subject_name = request.POST['subject_name']
         data.answer_sheet = request.FILES['answer_sheet']
         data.save()
+        getMarks(request, data.answer_sheet.url, data.id)
         messages.success(request, mark_safe(
             f'Successfully uploaded answer sheet of <b>roll number:{rollNumber}</b>'))
     else:
@@ -115,5 +157,6 @@ def create_Or_Update_AnswerSheet(request):
         checker.subject_name = request.POST['subject_name']
         checker.answer_sheet = request.FILES['answer_sheet']
         checker.save()
+        getMarks(request, checker.answer_sheet.url, checker.id)
         messages.success(request, mark_safe(
             f'Successfully updated  answer sheet of <b>roll number:{rollNumber}</b>'))
