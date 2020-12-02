@@ -4,12 +4,14 @@ from django.utils.safestring import mark_safe
 from core.models import AnswerSheets, AnswerKeys
 from core.forms import AnswerSheetForm, AnswerKeyForm
 from django.contrib.auth.decorators import login_required
+from core.calculate_mark import calculateMark
 
 
 @login_required()
 def home(request):
     form = AnswerKeyForm()
     datas = AnswerSheets.objects.all()
+    calculateMark()
     if request.method == 'POST':
         form = AnswerKeyForm(request.POST)
         if form.is_valid():
@@ -52,6 +54,7 @@ def answerKeyUpload(request):
 
     return render(request, 'upload_answerkey.html', {'form': form})
 
+
 def create_Or_Update_AnswerKey(request, subjectName, key):
     # intialize a checker
     checker = None
@@ -66,11 +69,14 @@ def create_Or_Update_AnswerKey(request, subjectName, key):
         data.answer_key = key
         data.subject_name = subjectName
         data.save()
-        messages.success(request, mark_safe(f'Successfully added <b>{subjectName}</b> key'))
+        messages.success(request, mark_safe(
+            f'Successfully added <b>{subjectName}</b> key'))
     else:
         checker.answer_key = key
         checker.save()
-        messages.success(request, mark_safe(f'Successfully updated <b>{subjectName}</b> key'))
+        messages.success(request, mark_safe(
+            f'Successfully updated <b>{subjectName}</b> key'))
+
 
 @login_required()
 def answerSheetUpload(request):
@@ -83,6 +89,7 @@ def answerSheetUpload(request):
             create_Or_Update_AnswerSheet(request)
             return redirect('answer_sheet_upload')
     return render(request, 'upload_answersheet.html', {'form': form, 'outData': outData})
+
 
 def create_Or_Update_AnswerSheet(request):
     # intialize a checker
@@ -101,10 +108,12 @@ def create_Or_Update_AnswerSheet(request):
         data.subject_name = request.POST['subject_name']
         data.answer_sheet = request.FILES['answer_sheet']
         data.save()
-        messages.success(request, mark_safe(f'Successfully uploaded answer sheet of <b>roll number:{rollNumber}</b>'))
+        messages.success(request, mark_safe(
+            f'Successfully uploaded answer sheet of <b>roll number:{rollNumber}</b>'))
     else:
         checker.student_name = request.POST['student_name']
         checker.subject_name = request.POST['subject_name']
         checker.answer_sheet = request.FILES['answer_sheet']
         checker.save()
-        messages.success(request, mark_safe(f'Successfully updated  answer sheet of <b>roll number:{rollNumber}</b>'))
+        messages.success(request, mark_safe(
+            f'Successfully updated  answer sheet of <b>roll number:{rollNumber}</b>'))
