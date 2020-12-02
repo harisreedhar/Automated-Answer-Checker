@@ -12,6 +12,9 @@ def decomposeDictionary(answerKey, includeMarks = False):
               answer_and_mark = answerKey.get(key)
               words.append(answer_and_mark[0])
               marks.append(answer_and_mark[1])
+
+       # convert individual string elements to a single string list
+       words = [' '.join(w) for w in words]
        if includeMarks:
               return words, marks
        return words
