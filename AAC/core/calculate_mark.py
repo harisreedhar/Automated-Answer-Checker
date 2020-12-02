@@ -1,8 +1,47 @@
 from core.HandWriting_Recognition.src.imageToText import photoToText
+import bisect
 
 def getWordsFromImage(imagePath):
        wordList, accuracyList = photoToText(imagePath)
        return wordList
+
+def seperateQuestionAnswer(words_from_answersheet):
+       
+       qn = ["answer", "answer2", "answer3"]
+       nI = len(qn)
+       answerFromStudent = {}
+       last = len(words_from_answersheet)
+       pos1 = bisect.bisect_right(words_from_answersheet, "answer")
+       for i in range(1, nI):
+              fullanswer = ""
+              if i == nI-1:
+                     pos2 =  bisect.bisect_right(words_from_answersheet, qn(i))
+                     ans = words_from_answersheet[pos1: pos2]
+                     for j in ans:
+                            fullanswer += j
+                            fullanswer += " "
+                     answerFromStudent[qn[i-1]: fullanswer]
+                     
+                     ans = words_from_answersheet[pos2: last-1]
+                     for j in ans:
+                            fullanswer += j
+                            fullanswer += " "
+                     answerFromStudent[qn[i]: fullanswer]
+                     
+              else:
+                     pos2 =  bisect.bisect_right(words_from_answersheet, qn(i))
+                     ans = words_from_answersheet[pos1: pos2]
+                     for j in ans:
+                            fullanswer += j
+                            fullanswer += " "
+                     answerFromStudent[qn[i-1]: fullanswer]
+                     pos1 = pos2
+             
+       
+       return answerFromStudent 
+
+              
+              
 
 def decomposeDictionary(answerKey, includeMarks = False):
        words = []
