@@ -4,6 +4,7 @@ Helper functions for ocr project
 """
 import numpy as np
 import cv2
+from pdf2image import convert_from_path
 
 
 SMALL_HEIGHT = 800
@@ -43,3 +44,9 @@ def img_extend(img, shape):
     x = np.zeros(shape, np.uint8)
     x[:img.shape[0], :img.shape[1]] = img
     return x
+
+# Pdf to image conversion
+def pdf_to_image(path):
+    image = convert_from_path('example.pdf') 
+    return image
+
