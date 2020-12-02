@@ -74,6 +74,17 @@ def calculateMark():
                     'Qn2':[("test2", "test2"), 20],
                     'Qn3':[("test3", "test3"), 30]}
        words_from_answerkey = decomposeDictionary(answerKey)
+       
+       answerFromStudent = seperateQuestionAnswer(words_from_answersheet) # getting answers of corresponding questions
+       length = len(answerFromStudent)
+       
+       answerFromStudentList = list(answerFromStudent) #converting to list for accessing value by index
+       answerKeyList = list(answerKey) #converting to list for accessing value by index
+       
+       total = 0 # for storing total_marks
+       for i in range(length):
+              total += markForOneQuestion(answerFromStudent[i], answerKeyList[i], 10))
+              
 
        ####### Do similarity checking code here #######
 
