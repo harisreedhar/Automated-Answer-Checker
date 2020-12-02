@@ -14,6 +14,7 @@ from core.HandWriting_Recognition.src.WordSegmentation import wordSegmentation, 
 
 from core.HandWriting_Recognition.src import page
 from core.HandWriting_Recognition.src import words
+from core.HandWriting_Recognition.src.utils import pdf_to_image
 #from PIL import Image
 from autocorrect import Speller
 spell = Speller()
@@ -56,10 +57,11 @@ def linePhotoToTextList(path):
 
 	return stringList, accuracyList
 
-model = Model(open(FilePaths.fnCharList).read(), DecoderType.BestPath, mustRestore=True)
+model = Model(open(FilePaths.fnCharList).read(), DecoderType.BeamSearch, mustRestore=True)
 
-def photoToText(path, autoCorrection = True):
-	image = cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
+def photoToText(imageArr, autoCorrection = True):
+	#image = cv2.cvtColor(cv2.imread(imagePath), cv2.COLOR_BGR2RGB)
+	image = cv2.cvtColor(np.asarray(imageArr), cv2.COLOR_BGR2RGB)
 
 	# Crop image and get bounding boxes
 	crop = page.detection(image)
@@ -77,23 +79,25 @@ def photoToText(path, autoCorrection = True):
 			wordImageList.append(cv2.cvtColor(imageChunk, cv2.COLOR_BGR2GRAY))
 			i += 1
 
-	stringList = []
+	answer = ""
 	accuracyList = []
 	for wordImage in wordImageList:
-		wordImage = prepareImg(wordImage, 50)
+		#wordImage = prepareImg(wordImage, 50)
 		accuracy, text = infer(model, wordImage)
 		if autoCorrection:
 			if accuracy < 0.5:
 				text = spell(text)
-		stringList.append(text)
+		answer = answer + " " + text
 		accuracyList.append(accuracy)
 
-	return stringList, accuracyList
+	return answer, accuracyList
 
-def getPath():
-	dir_path = os.path.dirname(os.path.realpath(__file__))
-	mypath = str(Path(dir_path).parents[0])
-	print(mypath)
-	return
-
-#print(photoToText('core/HandWriting_Recognition/data/test.jpg')[0])
+def pdfToText(path):
+	images = pdf_to_image(path)
+	answer = ""
+	accuracyList = []
+	for img in images:
+		temp1, temp2 = photoToText(img)
+		answer = answer + " " + temp1
+		accuracyList.extend(temp2)
+	return answer, accuracyList
