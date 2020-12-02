@@ -1,0 +1,97 @@
+absl-py==0.10.0
+aiohttp @ file:///home/conda/feedstock_root/build_artifacts/aiohttp_1605734405039/work
+asgiref @ file:///home/conda/feedstock_root/build_artifacts/asgiref_1605523041333/work
+astor==0.8.1
+astroid==2.4.2
+astunparse==1.6.3
+async-timeout==3.0.1
+attrs @ file:///home/conda/feedstock_root/build_artifacts/attrs_1605083924122/work
+autocorrect==2.2.2
+autopep8==1.5.4
+backcall==0.2.0
+boto==2.49.0
+boto3 @ file:///home/conda/feedstock_root/build_artifacts/boto3_1606890767689/work
+botocore @ file:///home/conda/feedstock_root/build_artifacts/botocore_1606885718678/work
+brotlipy==0.7.0
+bz2file==0.98
+cached-property==1.5.1
+cachetools==4.1.1
+certifi==2020.11.8
+cffi @ file:///home/conda/feedstock_root/build_artifacts/cffi_1606601125223/work
+chardet @ file:///home/conda/feedstock_root/build_artifacts/chardet_1602255309768/work
+cryptography @ file:///home/conda/feedstock_root/build_artifacts/cryptography_1604179075887/work
+decorator==4.4.2
+Django @ file:///home/conda/feedstock_root/build_artifacts/django_1606808783925/work
+django-crispy-forms @ file:///home/conda/feedstock_root/build_artifacts/django-crispy-forms_1605739495816/work
+editdistance @ file:///home/conda/feedstock_root/build_artifacts/editdistance_1602326244272/work
+gast==0.2.2
+gensim @ file:///home/conda/feedstock_root/build_artifacts/gensim_1589441213562/work
+google-api-core @ file:///home/conda/feedstock_root/build_artifacts/google-api-core-split_1599168895280/work
+google-auth==1.20.1
+google-auth-oauthlib==0.4.1
+google-cloud-core @ file:///home/conda/feedstock_root/build_artifacts/google-cloud-core_1602093568796/work
+google-cloud-storage==1.19.0
+google-crc32c @ file:///home/conda/feedstock_root/build_artifacts/google-crc32c_1602546489752/work
+google-pasta==0.2.0
+google-resumable-media @ file:///home/conda/feedstock_root/build_artifacts/google-resumable-media_1602011069843/work
+googleapis-common-protos @ file:///home/conda/feedstock_root/build_artifacts/googleapis-common-protos-feedstock_1604414770577/work
+grpcio @ file:///home/conda/feedstock_root/build_artifacts/grpcio_1604365513151/work
+h5py==2.10.0
+idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1593328102638/work
+importlib-metadata @ file:///home/conda/feedstock_root/build_artifacts/importlib-metadata_1606885585839/work
+ipython==7.16.1
+ipython-genutils==0.2.0
+isort==4.3.21
+jedi==0.17.1
+jmespath @ file:///home/conda/feedstock_root/build_artifacts/jmespath_1589369830981/work
+Keras-Applications==1.0.8
+Keras-Preprocessing==1.1.0
+lazy-object-proxy==1.4.3
+Markdown==3.2.2
+mccabe==0.6.1
+multidict @ file:///home/conda/feedstock_root/build_artifacts/multidict_1602413133191/work
+nltk==3.4.4
+numpy==1.18.5
+olefile @ file:///home/conda/feedstock_root/build_artifacts/olefile_1602866521163/work
+opencv-python==3.4.10.35
+opt-einsum==3.3.0
+parso==0.7.0
+pdf2image @ file:///home/conda/feedstock_root/build_artifacts/pdf2image_1588278609827/work
+pickleshare==0.7.5
+Pillow @ file:///home/conda/feedstock_root/build_artifacts/pillow_1604748693076/work
+prompt-toolkit==3.0.5
+protobuf==3.13.0
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+pycodestyle==2.6.0
+pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1593275161868/work
+Pygments==2.6.1
+pylint==2.5.3
+pyOpenSSL @ file:///home/conda/feedstock_root/build_artifacts/pyopenssl_1606535649775/work
+PySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_1602326924965/work
+python-dateutil==2.8.1
+pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1604321279890/work
+requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1605186911681/work
+requests-oauthlib==1.3.0
+rsa==4.6
+s3transfer @ file:///drone/src/build_artifacts/s3transfer_1602877463089/work
+scipy @ file:///home/conda/feedstock_root/build_artifacts/scipy_1604304781443/work
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1590081179328/work
+smart-open @ file:///home/conda/feedstock_root/build_artifacts/smart_open_1606570085146/work
+sqlparse @ file:///home/conda/feedstock_root/build_artifacts/sqlparse_1602142927465/work
+tensorboard==1.14.0
+tensorboard-plugin-wit==1.7.0
+tensorflow @ file:///home/conda/feedstock_root/build_artifacts/tensorflow_1594833314895/work/tensorflow_pkg/tensorflow-1.14.0-cp37-cp37m-linux_x86_64.whl
+tensorflow-estimator==1.14.0
+tensorflow-gpu==1.15.0
+termcolor==1.1.0
+toml==0.10.1
+traitlets==4.3.3
+typed-ast==1.4.1
+typing-extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1602702424206/work
+urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1603125704209/work
+wcwidth==0.2.5
+Werkzeug==1.0.1
+wrapt==1.12.1
+yarl @ file:///home/conda/feedstock_root/build_artifacts/yarl_1605429464118/work
+zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1603668650351/work
