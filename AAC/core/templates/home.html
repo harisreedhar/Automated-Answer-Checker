@@ -3,47 +3,44 @@
 
 {% block content %}
 <section id="AAC">
-    <div class="container" align="right">
-      <form action="{% url 'logout' %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-secondary btn-lg" value="Logout">
-          Logout
-        </button>
-        <br>
-      </form>
-      <br>
-    </div>
-
     <div class="container">
         <div class="row">
 
-          <div class="jumbotron">
+          <div style="background:transparent !important" class="jumbotron">
             <h1 class="display-4">Welcome</h1>
-            <p class="lead">“Automated Answer Checker” is a web application which can compute marks from answers sheets of students with ease</p>
+            <p class="lead text-secondary">“Automated Answer Checker” is a web application to compute marks from answers sheets using Handwriting recognition and similarity checking.</p>
             <hr class="my-4">
-            <p>Upload and manage answer keys of subject</p>
-            <p class="lead">
-              <form action="{% url 'answer_key_upload' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-secondary btn-lg" value="Upload Answer Key">
-                  Manage Answer Keys
-                </button>
-              </form>
-            </p>
-            <p>Upload and manage answer sheets of students</p>
-              <p class="lead">
-                <form action="{% url 'answer_sheet_upload' %}">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-secondary btn-lg" value="Upload Answer Sheet">
-                    Manage Answer Sheets
-                  </button>
-                </form>
-              </p>
-          </div>
-        </div>
 
-          <div class="column">
-          <table class="table table-striped table-light table-hover">
+            <div class="row">
+              <div class="col" align="center">
+                <p class="lead">
+                  <form action="{% url 'answer_key_upload' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-lg" value="Upload Answer Key">
+                      Manage Answer Keys &nbsp;
+                    </button>
+                  </form>
+                  </br>
+                  <p>Upload or update answer keys of a subject</p>
+                </p>
+              </div>
+              <div class="col" align="center">
+                <p class="lead">
+                  <form action="{% url 'answer_sheet_upload' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-lg" value="Upload Answer Sheet">
+                      Manage Answer Sheets
+                    </button>
+                  </form>
+                  </br>
+                  <p>Upload or update answer sheets of a student</p>
+                </p>
+              </div>
+            </div>
+
+          </br>
+          <div class="col">
+            <table class="table table-light table-hover shadow-sm p-3 mb-5 bg-white rounded">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Name</th>
@@ -65,6 +62,9 @@
           </table>
       </div>
     </div>
+
+  </div>
+</div>
 
 </section>
 

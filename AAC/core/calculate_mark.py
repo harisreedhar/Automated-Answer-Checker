@@ -105,9 +105,3 @@ def calculateMark(answerSheet, answerKey):
        computed_mark = sum(computedMarks)
 
        return actual_mark, computed_mark
-
-answerKey = {'Qn1':[("frederick Barbarossa was elected king of germany on 4th march 1152"), 5],
-             'Qn2':[("ivan the terrible was the first brand prince to have himself officially crowned tsar"), 10],
-             'Qn3':[("The noble six hundred refers to the six hundred British soldiers of light brigade"), 10]}
-
-imagePath = '/home/hari/Downloads/htr_test.pdf'

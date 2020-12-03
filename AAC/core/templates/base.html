@@ -23,12 +23,36 @@
                 </button>
                 </form>
         </span>
-        <span class="navbar-text">
-                Evaluate answersheet with ease
-        </span>
+
+        <!-- Lazy code for show/hide logout and regiter button -->
+        {% if request.get_full_path != '/accounts/login/?next=/' %}
+        {% if request.get_full_path != '/accounts/register/' %}
+        {% if request.get_full_path != '/accounts/login/' %}
+        <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary btn-lg" value="Logout">
+                  Logout
+                </button>
+                <br>
+        </form>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+
+        {% if request.get_full_path == '/accounts/login/?next=/' %}
+        <form action="{% url 'register' %}">
+                <input type="submit" class="btn btn-light btn-lg" value="New Teacher Registration" />
+        </form>
+        {% endif %}
+
+        {% if request.get_full_path == '/accounts/login/' %}
+        <form action="{% url 'register' %}">
+                <input type="submit" class="btn btn-light btn-lg" value="New Teacher Registration" />
+        </form>
+        {% endif %}
+
         </nav>
         <br>
-
 
 {% block content%}
 
@@ -47,5 +71,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+
+
 </body>
 </html>
