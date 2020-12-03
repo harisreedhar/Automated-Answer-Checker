@@ -53,5 +53,5 @@ class AnswerKeyForm(forms.Form):
         except:
             checker = False
         if not checker:
-            raise forms.ValidationError(mark_safe("Answer key should be in the form: <br/> Qn1 = 'hint 1', 'hint 2', ... 'hint n'<br/>Qn2 = 'hint 1', 'hint 2', ... 'hint n'<br/>"))
+            raise forms.ValidationError(mark_safe("Answer key should be in the form: <br/> Q1 = 'hint 1', 'hint 2', ... 'hint n'<br/>Q2 = 'hint 1', 'hint 2', ... 'hint n'<br/>"))
         return

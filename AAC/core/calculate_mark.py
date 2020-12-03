@@ -1,8 +1,10 @@
 from core.HandWriting_Recognition.src.imageToText import pdfToText
 from core.grading import answerForSingleQuestion
-import re
+from pprint import pprint
+import numpy as np
 import bisect
 import spacy
+import re
 
 def getWordsFromPdf(imagePath, splitAnswers = False):
        wordList, accuracyList = pdfToText(imagePath)
@@ -55,18 +57,22 @@ def decomposeDictionary(answerKey, includeMarks = False):
        words = []
        marks = []
        for i in range(len(answerKey)):
-              key = 'Qn'+str(i+1)
+              key = 'Q'+str(i+1)
               answer_and_mark = answerKey.get(key)
-              words.append(answer_and_mark[0])
+              if isinstance(answer_and_mark[0], (list, tuple)):
+                     temp = ' '.join(answer_and_mark[0])
+                     words.append(temp)
+              elif isinstance(answer_and_mark[0], str):
+                     words.append(answer_and_mark[0])
               marks.append(answer_and_mark[1])
 
        # convert individual string elements to a single string list
-       #words = [' '.join(w) for w in words]
        if includeMarks:
               return words, marks
        return words
 
 def temporarySimilarityChecking(answer, answerKey, mark):
+       #nlp = spacy.load('en_core_web_md')
        nlp = spacy.load('en')
        doc1 = nlp(answer)
        doc2 = nlp(answerKey)
@@ -87,9 +93,9 @@ def temporarySimilarityChecking(answer, answerKey, mark):
 
 def calculateMark(answerSheet, answerKey):
        words_from_answersheet = getWordsFromPdf(answerSheet, splitAnswers = True)
-       print(words_from_answersheet)
+
+
        words_from_answerkey, marks = decomposeDictionary(answerKey, includeMarks=True)
-       print(words_from_answerkey)
 
        computedMarks = []
        if len(words_from_answersheet) == len(words_from_answerkey):
@@ -101,7 +107,33 @@ def calculateMark(answerSheet, answerKey):
        else:
               print("Handwriting Detection error! length of answerkeys and answer doesn't match")
 
+       print(chr(27)+'[2j')
+       print('\033c')
+       print('\x1bc')
+
+       print('\n**************** Answer Key ****************')
+       pprint(words_from_answerkey)
+       print('\n************** Detected Answer **************')
+       pprint(words_from_answersheet)
+       print('\n*************** Total Marks ****************\n', marks, '\n')
+       print('************** Computed Marks **************\n', computedMarks, '\n')
+
        actual_mark = sum(marks)
        computed_mark = sum(computedMarks)
 
        return actual_mark, computed_mark
+
+def computeGrade(mark):
+       if 0.85 <= mark <= 1:
+              return 'A'
+       elif 0.75 <= mark < 0.85:
+              return 'B'
+       elif 0.65 <= mark < 0.75:
+              return 'C'
+       elif 0.55 <= mark < 0.65:
+              return 'D'
+       elif 0.45 <= mark < 0.55:
+              return 'E'
+       else:
+              return 'F'
+

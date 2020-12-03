@@ -4,7 +4,7 @@ from django.utils.safestring import mark_safe
 from core.models import AnswerSheets, AnswerKeys, Grade
 from core.forms import AnswerSheetForm, AnswerKeyForm
 from django.contrib.auth.decorators import login_required
-from core.calculate_mark import calculateMark
+from core.calculate_mark import calculateMark, computeGrade
 
 
 @login_required()
@@ -38,7 +38,7 @@ def answerKeyUpload(request):
                 # iterate through marks with index i
                 for i, m in enumerate(marks):
                     # stores user input value to dicionary
-                    exec(f"dictionary[f'Qn{i+1}'] = [Qn{i+1}, m]")
+                    exec(f"dictionary[f'Q{i+1}'] = [Q{i+1}, m]")
                     pass
                 # create new record or update existing based on availability of subject name
                 create_Or_Update_AnswerKey(request, subjectName, dictionary)
@@ -119,14 +119,14 @@ def create_Or_Update_Grade(ansId, totalMark, computedMark):
         data.answersheet_id = ansId
         data.total_mark = totalMark
         data.computed_mark = computedMark
-        data.grade = 'grade'
+        data.grade = computeGrade(computedMark/totalMark)
         data.subject_name = ansInstance.subject_name
         data.student_name = ansInstance.student_name
         data.save()
     else:
         checker.total_mark = totalMark
         checker.computed_mark = computedMark
-        checker.grade = 'grade'
+        checker.grade = computeGrade(computedMark/totalMark)
         checker.subject_name = ansInstance.subject_name
         checker.student_name = ansInstance.student_name
         checker.save()
