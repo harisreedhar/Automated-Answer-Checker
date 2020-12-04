@@ -43,12 +43,11 @@ def answerKeyUpload(request):
                 # create new record or update existing based on availability of subject name
                 create_Or_Update_AnswerKey(request, subjectName, dictionary)
             except:
-                string = "Error! Answer Key creation failed<br/>"
-                string += "Recheck:<br/>"
-                string += "1) Number of questions and marks are same <br/>"
-                string += "2) Answerkey is written in correct format"
+                string = ""
+                string += "* Questions and Marks have different length <br/>"
+                string += "* Answerkey is not written in correct format"
                 errorMessage = mark_safe(string)
-                messages.success(request, errorMessage)
+                messages.error(request, errorMessage)
 
             return redirect('answer_key_upload')
 
@@ -62,7 +61,7 @@ def create_Or_Update_AnswerKey(request, subjectName, key):
         # check subject name is present in database
         checker = AnswerKeys.objects.get(subject_name=subjectName)
     except:
-        pass
+        checker = None
 
     if checker is None:
         data = AnswerKeys()
@@ -70,12 +69,12 @@ def create_Or_Update_AnswerKey(request, subjectName, key):
         data.subject_name = subjectName
         data.save()
         messages.success(request, mark_safe(
-            f'Successfully added <b>{subjectName}</b> key'))
+            f'Successfully added answerkey of <b>{subjectName}</b>'))
     else:
         checker.answer_key = key
         checker.save()
         messages.success(request, mark_safe(
-            f'Successfully updated <b>{subjectName}</b> key'))
+            f'Successfully updated answerkey of <b>{subjectName}</b>'))
 
 
 @login_required()
@@ -100,11 +99,12 @@ def getMarks(request, answerSheet, ansId):
         totalMark, computedMark = calculateMark(answerSheet, answerKey)
 
         create_Or_Update_Grade(int(ansId), totalMark, computedMark)
-
-        messages.success(request, f"{computedMark} mark out of {totalMark}")
+        printMarks = mark_safe(f"<h3><b>Grade: {computeGrade(computedMark/totalMark)}</b></h3><h5> <b>{computedMark}</b> marks out of {totalMark}</h5>")
+        messages.info(request, printMarks)
     except:
-        messages.success(request, "Failed Calculating Marks")
-    return
+        messages.error(request, "Failed Calculating Marks")
+        return False
+    return True
 
 def create_Or_Update_Grade(ansId, totalMark, computedMark):
     checker = None
@@ -149,14 +149,17 @@ def create_Or_Update_AnswerSheet(request):
         data.subject_name = request.POST['subject_name']
         data.answer_sheet = request.FILES['answer_sheet']
         data.save()
-        getMarks(request, data.answer_sheet.url, data.id)
-        messages.success(request, mark_safe(
-            f'Successfully uploaded answer sheet of <b>roll number:{rollNumber}</b>'))
+        marksCalculated = getMarks(request, data.answer_sheet.url, data.id)
+        if marksCalculated:
+            messages.success(request, mark_safe(
+                f'Successfully uploaded answer sheet of <b>roll number:{rollNumber}</b>'))
     else:
         checker.student_name = request.POST['student_name']
         checker.subject_name = request.POST['subject_name']
         checker.answer_sheet = request.FILES['answer_sheet']
         checker.save()
-        getMarks(request, checker.answer_sheet.url, checker.id)
-        messages.success(request, mark_safe(
-            f'Successfully updated  answer sheet of <b>roll number:{rollNumber}</b>'))
+        marksCalculated = getMarks(request, checker.answer_sheet.url, checker.id)
+        if marksCalculated:
+            messages.success(request, mark_safe(
+                f'Mark of <b>roll number:{rollNumber}</b> has been updated'))
+    return

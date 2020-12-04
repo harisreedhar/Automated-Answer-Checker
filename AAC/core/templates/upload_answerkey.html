@@ -5,7 +5,7 @@
 <section id="AAC">
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form|crispy }}
@@ -16,11 +16,23 @@
             </div>
         </div>
         {% if messages %}
-          <ul class="messages">
-              {% for message in messages %}
-              <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-              {% endfor %}
-          </ul>
+            {% for message in messages %}
+
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger col-md-10" role="alert">
+                    <h4 class="alert-heading">Error!</h4>
+                    <p>Answer Key creation failed :(</p>
+                    <hr>
+                    <h5> Possible cause of error: </h5>
+                    <p class="mb-0">{{message}}</p>
+                    </div>
+                {% endif %}
+
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <p class="text-secondary">{{message}}</p>
+                {% endif %}
+
+            {% endfor %}
         {% endif %}
     </div>
 
