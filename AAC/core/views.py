@@ -10,7 +10,7 @@ from core.calculate_mark import calculateMark, computeGrade
 @login_required()
 def home(request):
     form = AnswerKeyForm()
-    datas = Grade.objects.all()
+    datas = Grade.objects.all().order_by('roll_number')
     if request.method == 'POST':
         form = AnswerKeyForm(request.POST)
         if form.is_valid():
@@ -122,6 +122,7 @@ def create_Or_Update_Grade(ansId, totalMark, computedMark):
         data.grade = computeGrade(computedMark/totalMark)
         data.subject_name = ansInstance.subject_name
         data.student_name = ansInstance.student_name
+        data.roll_number = ansInstance.roll_number
         data.save()
     else:
         checker.total_mark = totalMark
@@ -129,6 +130,7 @@ def create_Or_Update_Grade(ansId, totalMark, computedMark):
         checker.grade = computeGrade(computedMark/totalMark)
         checker.subject_name = ansInstance.subject_name
         checker.student_name = ansInstance.student_name
+        checker.roll_number = ansInstance.roll_number
         checker.save()
     return
 

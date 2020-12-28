@@ -37,6 +37,7 @@ class Grade(models.Model):
     grade = models.CharField(max_length=32)
     student_name = models.CharField(max_length=256)
     subject_name = models.CharField(max_length=256)
+    roll_number = models.IntegerField()
 
     def __str__(self):
         return self.subject_name

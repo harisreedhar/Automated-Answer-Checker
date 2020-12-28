@@ -43,6 +43,7 @@
             <table class="table table-light table-hover shadow-sm p-3 mb-5 bg-white rounded">
             <thead class="thead-dark">
               <tr>
+                <th scope="col">Roll No.</th>
                 <th scope="col">Name</th>
                 <th scope="col">Subject</th>
                 <th scope="col">Obtained Mark</th>
@@ -53,6 +54,7 @@
             <tbody>
               {% for data in datas %}
               <tr>
+                <td>{{data.roll_number}}</td>
                 <td>{{data.student_name}}</td>
                 <td>{{data.subject_name}}</td>
                 <td>{{data.computed_mark}}</td>
