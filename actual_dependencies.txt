@@ -1,6 +1,6 @@
 django
 django-crispy-forms
-tensorflow
+tensorflow==1.14
 editdistance
 autocorrect
 opencv-python==3.4.10.35
