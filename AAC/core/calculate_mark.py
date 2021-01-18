@@ -72,8 +72,8 @@ def decomposeDictionary(answerKey, includeMarks = False):
        return words
 
 def temporarySimilarityChecking(answer, answerKey, mark):
-       #nlp = spacy.load('en_core_web_md')
-       nlp = spacy.load('en')
+       nlp = spacy.load('en_core_web_md')
+       #nlp = spacy.load('en')
        doc1 = nlp(answer)
        doc2 = nlp(answerKey)
        similarity = doc1.similarity(doc2)
