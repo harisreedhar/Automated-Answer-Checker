@@ -16,3 +16,52 @@ label{
     padding: 1px;
     font-size: 120%;
 }
+
+
+
+
+  #AACC {
+    color: #666666;
+    font-size: 14px;
+    font-family: 'Josefin Sans', sans-serif;;
+    line-height: 1.80857;
+    font-weight: normal;
+    overflow-x: hidden;
+  }
+
+  div containers{
+    line-height: 20px;
+    font-size: 16px;
+    display: block;
+    font-weight: 500;
+    color: #090400;
+    padding: 22px 20px;
+    text-transform: uppercase;
+  }
+
+
+  button.main_bt {
+    background: #302f2f;
+    border: none;
+    color: #fff;
+    width: 150px;
+    height: 50px;
+    font-size: 22px;
+    margin-top: 45px;
+  
+    
+}
+
+
+input[type=button], input[type=submit], input[type=reset] {
+    background-color:  rgb(30, 32, 37);
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  
+
