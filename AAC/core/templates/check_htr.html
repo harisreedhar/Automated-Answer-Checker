@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+<section id="AAC">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-secondary btn-lg" value="Check Handwriting"/>
+                </form>
+            </div>
+
+            <div class="col-md-12">
+            </br>
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class = "alert alert-danger" role="alert">
+              {{message}}
+            </div>
+            {% endif %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <p class="text-secondary">{{message}}</p>
+            {% endif %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <div class = "alert alert-secondary col-md-3" role="alert">
+              {{message}}
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}
