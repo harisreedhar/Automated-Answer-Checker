@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
 from core.models import AnswerSheets, AnswerKeys, Grade
-from core.forms import AnswerSheetForm, AnswerKeyForm
+from core.forms import AnswerSheetForm, AnswerKeyForm, CheckHtrForm
 from django.contrib.auth.decorators import login_required
 from core.calculate_mark import calculateMark, computeGrade
 
@@ -165,3 +165,29 @@ def create_Or_Update_AnswerSheet(request):
             messages.success(request, mark_safe(
                 f'Mark of <b>roll number:{rollNumber}</b> has been updated'))
     return
+
+########################## Check HTR ###############################
+
+from core.HandWriting_Recognition.src.utils import pdf_to_image
+from core.HandWriting_Recognition.src.imageToText import photoToText
+def pdfToText(path):
+    images = pdf_to_image(path)
+    answer = ""
+    accuracyList = []
+    wordList = []
+    for img in images:
+        temp1, temp2 = photoToText(img)
+        wordList.append(temp1)
+        accuracyList.extend(temp2)
+    return wordList, accuracyList
+
+def checkHTR(request):
+    form = CheckHtrForm()
+    if request.method == 'POST':
+        form = CheckHtrForm(request.POST, request.FILES)
+        if form.is_valid():
+            pdffile = request.POST['answersheet_path']
+            words, aa = pdfToText(pdffile)
+            messages.success(request, mark_safe(str(words)))
+            return redirect('check_htr')
+    return render(request, 'check_htr.html', {'form': form})
