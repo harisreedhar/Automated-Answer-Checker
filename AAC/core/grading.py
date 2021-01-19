@@ -8,6 +8,7 @@ import gensim
  #function takes array of strings of recognized texts... and original answer key
 
 def answerForSingleQuestion(answer, answerKey, mark):
+            answer_docs = []
             fullAnswerString = ""
             for i in answer:
                     if i != "," and i!= '.':
@@ -16,10 +17,12 @@ def answerForSingleQuestion(answer, answerKey, mark):
             print(fullAnswerString)
 
             tokenizedAnswer = sent_tokenize(fullAnswerString)  #sentence tokenising
+            for line in tokenizedAnswer:
+                       answer_docs.append(line)
 
             print(tokenizedAnswer)
 
-            gen_docs = [[w.lower() for w in word_tokenize(text)] for text in tokenizedAnswer]  #word tokenizing
+            gen_docs = [[w.lower() for w in word_tokenize(text)] for text in answer_docs]  #word tokenizing
 
             dictionary = gensim.corpora.Dictionary(gen_docs)
 
@@ -48,6 +51,7 @@ def answerForSingleQuestion(answer, answerKey, mark):
 
 
             tokenizedAnswerKey = sent_tokenize(fullAnswerKeyString)  #sentence tokenising of answerKey
+           
             print("hello")
             print(tokenizedAnswerKey)
 
