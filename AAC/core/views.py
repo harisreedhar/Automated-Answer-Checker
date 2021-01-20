@@ -6,6 +6,15 @@ from core.forms import AnswerSheetForm, AnswerKeyForm, CheckHtrForm
 from django.contrib.auth.decorators import login_required
 from core.calculate_mark import calculateMark, computeGrade
 
+from django.http import HttpResponse
+from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import letter
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4, inch, landscape
+from reportlab.platypus import Table, TableStyle
 
 @login_required()
 def home(request):
@@ -165,6 +174,63 @@ def create_Or_Update_AnswerSheet(request):
             messages.success(request, mark_safe(
                 f'Mark of <b>roll number:{rollNumber}</b> has been updated'))
     return
+
+@login_required()
+def generateMarkList(request):
+    dataAll = AnswerKeys.objects.all()
+    dataGrade = []
+
+    if request.method == 'POST':
+        subjectName = request.POST['subject_name']
+        dataGrade = Grade.objects.all().order_by('roll_number')
+        fromDatabase = []
+        for i in dataGrade:
+            if i.subject_name == subjectName:
+                fromDatabase.append(i)
+
+        response = HttpResponse(render(request, 'marklist_generate.html', {'outData': dataAll, 'datas': dataGrade}), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename= "{subjectName}_report.pdf"'
+
+        doc = SimpleDocTemplate(response, pagesize=A4, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=18)
+        doc.pagesize = landscape(A4)
+        elements = []
+
+        styles = getSampleStyleSheet()
+        styles.add(ParagraphStyle(name="Times", fontName='Times-Roman', fontSize=15, alignment=TA_JUSTIFY))
+        p_text = f"<u>{subjectName.upper()} MARK LIST</u><br/><br/>"
+        elements.append(Paragraph(p_text, styles["Times"]))
+        elements.append(Spacer(1, 5))
+
+        data = [
+        ["Student Name", "Mark", "Max Mark", "Grade"],
+        ]
+
+        for item in fromDatabase:
+            data.append([str(item.student_name), str(item.computed_mark), str(item.total_mark), str(item.grade)])
+
+        style = TableStyle([('ALIGN',(1,1),(-2,-2),'RIGHT'),
+                            ('TEXTCOLOR',(1,1),(-2,-2),colors.red),
+                            ('VALIGN',(0,0),(0,-1),'TOP'),
+                            ('TEXTCOLOR',(0,0),(0,-1),colors.blue),
+                            ('ALIGN',(0,-1),(-1,-1),'CENTER'),
+                            ('VALIGN',(0,-1),(-1,-1),'MIDDLE'),
+                            ('TEXTCOLOR',(0,-1),(-1,-1),colors.green),
+                            ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                            ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                            ])
+
+        s = getSampleStyleSheet()
+        s = s["BodyText"]
+        s.wordWrap = 'CJK'
+        data2 = [[Paragraph(cell, s) for cell in row] for row in data]
+        t=Table(data2)
+        t.setStyle(style)
+
+        elements.append(t)
+
+        doc.build(elements)
+        return response
+    return render(request, 'marklist_generate.html', {'outData': dataAll, 'datas': dataGrade})
 
 ########################## Check HTR ###############################
 

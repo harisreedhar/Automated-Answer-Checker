@@ -49,7 +49,6 @@ def seperateQuestionAnswer(words_from_answersheet):
                      answerFromStudent[qn[i-1]: fullanswer]
                      pos1 = pos2
 
-
        return answerFromStudent
 
 
@@ -94,19 +93,22 @@ def temporarySimilarityChecking(answer, answerKey, mark):
 def calculateMark(answerSheet, answerKey):
        words_from_answersheet = getWordsFromPdf(answerSheet, splitAnswers = True)
 
-
        words_from_answerkey, marks = decomposeDictionary(answerKey, includeMarks=True)
 
        computedMarks = []
        if len(words_from_answersheet) == len(words_from_answerkey):
               for anskey, ans, mrk in zip(words_from_answerkey, words_from_answersheet, marks):
-                     #ans = re.split('\s+', ans)
-                     #anskey = re.split('\s+', anskey)
-                     #computedMarks.append(answerForSingleQuestion(ans, anskey, mrk))
-                     computedMarks.append(temporarySimilarityChecking(ans, anskey, mrk))
+                     _ans = re.findall(r'\w+', ans)
+                     _ansKey = re.findall(r'\w+', anskey)
+                     _mark = answerForSingleQuestion(_ans, _ansKey, mrk)
+                     if _mark == 0:
+                            _mark = temporarySimilarityChecking(ans, anskey, mrk)
+                     computedMarks.append(_mark)
+                     #computedMarks.append(temporarySimilarityChecking(ans, anskey, mrk))
        else:
               print("Handwriting Detection error! length of answerkeys and answer doesn't match")
 
+       # clear terminal
        print(chr(27)+'[2j')
        print('\033c')
        print('\x1bc')
@@ -136,4 +138,3 @@ def computeGrade(mark):
               return 'E'
        else:
               return 'F'
-

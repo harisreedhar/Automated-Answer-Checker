@@ -64,7 +64,15 @@
               {% endfor %}
             </tbody>
           </table>
-      </div>
+
+
+      <form action="{% url 'marklist_generate' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-dark btn-block" value="Upload Answer Sheet">
+          Generate Mark List By Subject
+        </button>
+      </form>
+    </div>
     </div>
 
   </div>

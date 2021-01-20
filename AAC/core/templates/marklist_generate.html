@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+<section id="AAC">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="Subject">Subject </label>
+            <select class="form-control" id="subject_name", name = "subject_name" required>
+              <option value="0" selected disabled> Select </option>
+              {% for obj in outData %}
+              <option value="{{ obj.subject_name }}">{{ obj.subject_name }} </option>
+              {% endfor %}
+            </select>
+        </div>
+        <input type="submit" class="btn btn-secondary btn-lg" value="Generate Mark List"/>
+
+    </form>
+
+</div>
+</div>
+</div>
+
+</section>
+
+{% endblock %}

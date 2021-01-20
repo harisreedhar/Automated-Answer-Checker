@@ -8,5 +8,6 @@ pdf2image
 nltk
 gensim
 spacy
+reportlab
 
 python -m spacy download en_core_web_md
